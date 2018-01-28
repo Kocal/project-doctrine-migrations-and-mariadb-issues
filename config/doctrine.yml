@@ -1,4 +1,5 @@
 driver: pdo_mysql
+server_version: '10.2.12'
 user: root
 password:
 dbname: test
