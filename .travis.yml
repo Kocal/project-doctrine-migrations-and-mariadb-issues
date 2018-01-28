@@ -9,21 +9,20 @@ addons:
 
 before_script:
   - mysql -e 'CREATE DATABASE test;'
-  - cp .env.dist .env
   - composer self-update
   - composer install --dev --prefer-dist --no-interaction
 
 script:
-  - php bin/console doctrine:database:drop -n --force
-  - php bin/console doctrine:database:create -n
-  - php bin/console doctrine:schema:create -n
-  - php bin/console doctrine:schema:update --dump-sql
-  - php bin/console doctrine:schema:validate -n
+  - php vendor/bin/doctrine orm:schema-tool:drop -n --force
+  - php vendor/bin/doctrine orm:schema-tool:create -n
+  - php vendor/bin/doctrine orm:schema-tool:create -n
+  - php vendor/bin/doctrine orm:schema-tool:update --dump-sql
+  - php vendor/bin/doctrine orm:validate-schema -n
   - rm src/Entity/Admin.php
   - mv AdminEdited.php src/Entity/Admin.php
-  - php bin/console doctrine:migrations:diff -n
-  - php bin/console doctrine:migrations:migrate -n
-  - php bin/console doctrine:schema:validate -n
+  - php vendor/bin/doctrine-migrations migrations:diff --configuration=migrations.yml -n
+  - php vendor/bin/doctrine-migrations migrations:migrate --configuration=migrations.yml -n
+  - php vendor/bin/doctrine orm:validate-schema -n
 
 cache:
   directories:
