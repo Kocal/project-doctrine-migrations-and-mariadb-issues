@@ -1,0 +1,30 @@
+language: php
+sudo: false
+
+php:
+  - 7.1
+
+addons:
+  mariadb: '10.2'
+
+before_script:
+  - mysql -e 'CREATE DATABASE test;'
+  - cp .env.dist .env
+  - composer self-update
+  - composer install --dev --prefer-dist --no-interaction
+
+script:
+  - php bin/console doctrine:database:drop -n --force
+  - php bin/console doctrine:database:create -n
+  - php bin/console doctrine:schema:create -n
+  - php bin/console doctrine:schema:update --dump-sql
+  - php bin/console doctrine:schema:validate -n
+  - rm src/Entity/Admin.php
+  - mv AdminEdited.php src/Entity/Admin.php
+  - php bin/console doctrine:migrations:diff -n
+  - php bin/console doctrine:migrations:migrate -n
+  - php bin/console doctrine:schema:validate -n
+
+cache:
+  directories:
+    - $COMPOSER_CACHE_DIR
