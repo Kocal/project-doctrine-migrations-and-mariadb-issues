@@ -20,8 +20,8 @@ script:
   - php vendor/bin/doctrine orm:validate-schema -n
   - rm src/Entity/Admin.php
   - mv AdminEdited.php src/Entity/Admin.php
-  - php vendor/bin/doctrine-migrations migrations:diff --configuration=migrations.yml -n
-  - php vendor/bin/doctrine-migrations migrations:migrate --configuration=migrations.yml -n
+  - php vendor/bin/doctrine-migrations migrations:diff --configuration=config/migrations.yml -n
+  - php vendor/bin/doctrine-migrations migrations:migrate --configuration=config/migrations.yml -n
   - php vendor/bin/doctrine orm:validate-schema -n
 
 cache:
