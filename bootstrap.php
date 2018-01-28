@@ -23,12 +23,7 @@ $config->setQueryCacheImpl($cache);
 $config->setMetadataDriverImpl($driver);
 
 // database configuration parameters
-$conn = array(
-    'driver' => 'pdo_mysql',
-    'user'     => 'root',
-    'password' => '',
-    'dbname'   => 'test',
-);
+$conn = \Symfony\Component\Yaml\Yaml::parseFile('config/doctrine.yml');
 
 // obtaining the entity manager
 $entityManager = EntityManager::create($conn, $config);
